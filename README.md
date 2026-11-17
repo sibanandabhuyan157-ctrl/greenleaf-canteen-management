@@ -4,6 +4,9 @@
 
 A complete **Full-Stack Offline & Online College Canteen Management System** built with **HTML5, Modern CSS3, Vanilla JavaScript (ES6+), PHP 8+, and MySQL (PDO)** featuring a clean **Green & White** visual theme and a custom **Leaf Logo**.
 
+- 🌐 **Live Public Website (For Employees & Students)**: https://sibanandabhuyan157-ctrl.github.io/greenleaf-canteen-management/
+- 📦 **GitHub Repository**: https://github.com/sibanandabhuyan157-ctrl/greenleaf-canteen-management
+
 ---
 
 ## 🌟 Complete Canteen Management Features
