@@ -1,0 +1,17 @@
+{
+  "name": "GreenLeaf Canteen Management System",
+  "short_name": "GreenLeaf Canteen",
+  "description": "Offline & Online College Canteen Management System with Counter POS, Pre-Ordering, KDS Token Board & Inventory.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f0fdf4",
+  "theme_color": "#15803d",
+  "icons": [
+    {
+      "src": "./assets/logo-leaf.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="leafGrad" x1="12" y1="12" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22c55e" />
+      <stop offset="55%" stop-color="#16a34a" />
+      <stop offset="100%" stop-color="#14532d" />
+    </linearGradient>
+    <linearGradient id="accentLeaf" x1="20" y1="80" x2="95" y2="25" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#dcfce7" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#14532d" flood-opacity="0.22" />
+    </filter>
+  </defs>
+  <!-- Outer rounded emblem -->
+  <rect x="6" y="6" width="108" height="108" rx="28" fill="url(#leafGrad)" filter="url(#softShadow)" />
+  <rect x="10" y="10" width="100" height="100" rx="24" stroke="#ffffff" stroke-opacity="0.28" stroke-width="2" />
+  <!-- Main White Organic Leaf -->
+  <path d="M88 26C56 26 30 44 26 76C25.3 81.5 27 86.5 30 90C33.5 93 38.5 94.7 44 94C76 90 94 64 94 32C94 28.5 91.5 26 88 26Z" fill="url(#accentLeaf)" />
+  <!-- Leaf Central Vein & Stem -->
+  <path d="M24 96C38 82 56 64 82 40" stroke="#15803d" stroke-width="5" stroke-linecap="round" />
+  <!-- Leaf Side Veins -->
+  <path d="M46 74C45 62 50 54 58 49" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" />
+  <path d="M58 62C68 62 75 58 81 51" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" />
+  <path d="M36 84C49 85 59 80 66 72" stroke="#16a34a" stroke-width="3.5" stroke-linecap="round" />
+  <!-- Secondary Sprout Bud -->
+  <path d="M32 54C24 44 26 30 38 24C44 34 40 48 32 54Z" fill="#bbf7d0" />
+</svg>
