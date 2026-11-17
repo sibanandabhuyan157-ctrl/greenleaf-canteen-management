@@ -3,883 +3,199 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#15803d" />
-  <meta name="description" content="GreenLeaf Canteen Management System — Full-Stack Offline & Online College Canteen Portal with Walk-in POS, Pre-Ordering, KDS Token Display, Inventory, and Campus Wallet." />
-  <title>GreenLeaf Canteen — Offline & Online Canteen Management System</title>
-  <link rel="icon" type="image/svg+xml" href="./assets/logo-leaf.svg" />
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="stylesheet" href="./css/style.css" />
+  <title>CampusLeaf Canteen — Simple Canteen Management System</title>
+  <link rel="icon" type="image/svg+xml" href="./logo.svg" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
-  <!-- ====================================================================
-       TOP STATUS & ROLE SWITCHER BAR
-       ==================================================================== -->
-  <div class="top-status-bar no-print">
-    <div class="status-left">
-      <span class="status-pill" id="connection-status-pill" title="Click to toggle Offline Counter Mode simulation">
-        <span class="status-dot" id="connection-dot"></span>
-        <span id="connection-text">Online • Hybrid DB Active</span>
-      </span>
-      <button type="button" class="status-pill" id="btn-toggle-offline" style="cursor:pointer;">
-        ⚡ Switch Offline/Online Mode
-      </button>
-      <span id="live-clock" style="opacity:0.9; font-weight:500;">Canteen Open • 07:30 AM – 09:30 PM</span>
-    </div>
-
-    <div class="status-right">
-      <span style="font-size:0.76rem; color:#bbf7d0;">Quick Role View:</span>
-      <div class="role-switcher" role="group" aria-label="Switch user role">
-        <button type="button" class="role-btn active" data-role="all">All Modules</button>
-        <button type="button" class="role-btn" data-role="student">🎓 Student Online</button>
-        <button type="button" class="role-btn" data-role="employee">🧾 Employee POS</button>
-        <button type="button" class="role-btn" data-role="admin">🛡️ Canteen Admin</button>
+  <!-- TOP HEADER WITH ORANGE & WHITE LEAF LOGO -->
+  <header>
+    <div class="brand">
+      <img src="./logo.svg" alt="Leaf Logo" />
+      <div>
+        <h1>CampusLeaf Canteen</h1>
+        <span>Offline &amp; Online College Canteen System</span>
       </div>
     </div>
-  </div>
 
-  <!-- ====================================================================
-       MAIN HEADER WITH CUSTOM GREEN & WHITE LEAF LOGO
-       ==================================================================== -->
-  <header class="app-header no-print">
-    <div class="header-inner">
-      <a href="#online" class="brand-lockup" id="brand-home-link">
-        <div class="brand-logo-wrap">
-          <img src="./assets/logo-leaf.svg" alt="GreenLeaf Canteen Leaf Logo" width="46" height="46" />
-        </div>
-        <div>
-          <div class="brand-title">
-            GreenLeaf Canteen
-            <span class="brand-tag">Offline + Online</span>
-          </div>
-          <div class="brand-subtitle">Fresh Campus Dining • Smart POS &amp; Pre-Order System</div>
-        </div>
-      </a>
-
-      <nav class="main-nav" aria-label="Canteen Modules">
-        <button type="button" class="nav-tab active" data-view="online" data-roles="all,student,admin">
-          🌿 Online Order
-          <span class="nav-badge" id="badge-menu-count">16</span>
-        </button>
-        <button type="button" class="nav-tab" data-view="pos" data-roles="all,employee,admin">
-          🖥️ Employee POS (Offline/Walk-in)
-        </button>
-        <button type="button" class="nav-tab" data-view="kds" data-roles="all,student,employee,admin">
-          🔔 Live KDS &amp; Tokens
-          <span class="nav-badge" id="badge-active-orders">3</span>
-        </button>
-        <button type="button" class="nav-tab" data-view="inventory" data-roles="all,employee,admin">
-          📦 Menu &amp; Stock
-          <span class="nav-badge" id="badge-low-stock">2</span>
-        </button>
-        <button type="button" class="nav-tab" data-view="wallet" data-roles="all,student,employee,admin">
-          💳 Campus Wallet
-        </button>
-        <button type="button" class="nav-tab" data-view="reports" data-roles="all,admin">
-          📊 Reports &amp; Feedback
-        </button>
-      </nav>
-
-      <div class="header-actions">
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-open-auth">
-          👤 <span id="active-user-label">Aarav (₹450)</span>
-        </button>
-      </div>
-    </div>
+    <nav class="nav-tabs" aria-label="Main Navigation">
+      <button type="button" class="tab-btn active" onclick="showTab('order', this)">🍽️ 1. Order Food</button>
+      <button type="button" class="tab-btn" onclick="showTab('orders', this)">🔔 2. Employee Orders (<span id="active-count">0</span>)</button>
+      <button type="button" class="tab-btn" onclick="showTab('admin', this)">⚙️ 3. Manage Menu &amp; Sales</button>
+    </nav>
   </header>
 
-  <!-- ====================================================================
-       MAIN WORKSPACE CONTAINER
-       ==================================================================== -->
-  <main class="app-main no-print">
-
-    <!-- ==================================================================
-         MODULE 1: STUDENT / FACULTY ONLINE MENU & PRE-ORDER PORTAL
-         ================================================================== -->
-    <section id="view-online" class="view-section active" aria-label="Online Menu and Pre-Order">
-      <div class="hero-banner">
-        <div class="hero-content">
-          <div class="hero-eyebrow">🍃 100% Hygienic Campus Canteen • Zero Queue Pre-Order</div>
-          <h1 class="hero-title">Skip the Break-Time Rush. Order Online &amp; Collect at the Leaf Counter!</h1>
-          <p class="hero-desc">
-            Pre-order your hot meals, snacks &amp; beverages from classroom or hostel, or walk in to our Employee Counter POS. Live token status updates in real time.
-          </p>
-          <div class="hero-coupons">
-            <button type="button" class="coupon-chip" data-apply-coupon="GREEN20">🏷️ GREEN20 (20% OFF Healthy)</button>
-            <button type="button" class="coupon-chip" data-apply-coupon="WELCOME10">🏷️ WELCOME10 (10% OFF Student)</button>
-            <button type="button" class="coupon-chip" data-apply-coupon="STAFF25">🏷️ STAFF25 (25% Faculty/Employee)</button>
-            <button type="button" class="coupon-chip" data-apply-coupon="HOSTEL15">🏷️ HOSTEL15 (15% Snacks)</button>
-          </div>
-        </div>
-
-        <div class="hero-stats-card">
-          <div>
-            <div class="hero-stat-val" id="hero-ready-tokens">GL-101</div>
-            <div class="hero-stat-lbl">Ready at Pickup Counter</div>
-          </div>
-          <div>
-            <div class="hero-stat-val" id="hero-avg-prep">~7 mins</div>
-            <div class="hero-stat-lbl">Avg Kitchen Prep Time</div>
-          </div>
-          <div>
-            <div class="hero-stat-val" id="hero-wallet-bal">₹450.00</div>
-            <div class="hero-stat-lbl">Campus Wallet Balance</div>
-          </div>
-          <div>
-            <div class="hero-stat-val">5% GST</div>
-            <div class="hero-stat-lbl">Subsidized Campus Tariff</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="workspace-grid">
-        <!-- Left: Filter Bar + Food Cards Grid -->
+  <main>
+    <!-- =======================================================
+         TAB 1: ORDER FOOD (ONLINE & WALK-IN COUNTER POS)
+         ======================================================= -->
+    <section id="tab-order" class="section active">
+      <div class="order-layout">
+        <!-- Left: Menu List -->
         <div>
-          <div class="filter-bar">
-            <div class="search-row">
-              <div class="search-input-wrap">
-                <input
-                  type="search"
-                  id="online-search-input"
-                  class="input-field"
-                  placeholder="🔍 Search dosa, thali, biryani, chai, paneer, salad..."
-                  aria-label="Search canteen menu"
-                />
-              </div>
-              <select id="online-diet-filter" class="input-field" style="inline-size:auto;" aria-label="Dietary filter">
-                <option value="all">🥗 All Items (Veg &amp; Egg)</option>
-                <option value="veg">🟢 Pure Veg Only</option>
-                <option value="special">⭐ Chef's Specials</option>
-              </select>
-            </div>
-            <div class="category-pills" id="online-category-pills"></div>
+          <div class="filter-bar" id="category-bar">
+            <button type="button" class="cat-btn active" onclick="filterMenu('All', this)">All Items</button>
+            <button type="button" class="cat-btn" onclick="filterMenu('Breakfast', this)">Breakfast</button>
+            <button type="button" class="cat-btn" onclick="filterMenu('Meals', this)">Meals</button>
+            <button type="button" class="cat-btn" onclick="filterMenu('Snacks', this)">Snacks</button>
+            <button type="button" class="cat-btn" onclick="filterMenu('Drinks', this)">Drinks</button>
           </div>
-
-          <div class="menu-grid" id="online-menu-grid"></div>
+          <div class="menu-grid" id="menu-container"></div>
         </div>
 
-        <!-- Right: Online Pre-Order Cart & Live Token Tracker -->
-        <aside class="cart-panel" aria-label="Online Order Cart">
-          <div class="cart-header">
-            <h2 class="cart-title">🛒 Your Tray (<span id="online-cart-count">0</span>)</h2>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-clear-online-cart">Clear</button>
+        <!-- Right: Order Bill & Checkout -->
+        <aside class="card">
+          <h2 style="color:var(--orange-dark); margin-block-end:0.75rem;">🧾 Current Bill</h2>
+          <div id="cart-items" style="margin-block-end:0.85rem; font-size:0.9rem;"></div>
+
+          <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:800; padding-block:0.6rem; border-block:1px dashed var(--orange-border); margin-block-end:0.85rem;">
+            <span>Total Payable:</span>
+            <span id="cart-total" style="color:var(--orange-dark);">₹0</span>
           </div>
 
-          <div class="cart-items-list" id="online-cart-list"></div>
+          <form onsubmit="placeOrder(event)">
+            <label style="font-size:0.8rem; font-weight:600;">Student / Customer Name</label>
+            <input type="text" id="cust-name" class="input" placeholder="Enter name or Roll No" required />
 
-          <!-- Promo Code Row -->
-          <div style="display:flex; gap:0.4rem; margin-block-end:0.75rem;">
-            <input
-              type="text"
-              id="online-coupon-input"
-              class="input-field"
-              placeholder="Coupon (e.g. GREEN20)"
-              style="text-transform:uppercase;"
-            />
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-apply-coupon">Apply</button>
-          </div>
-          <div id="coupon-feedback-msg" style="font-size:0.76rem; color:var(--green-700); font-weight:600; margin-block-end:0.55rem;"></div>
+            <label style="font-size:0.8rem; font-weight:600;">Order Mode (Online / Offline)</label>
+            <select id="order-type" class="input">
+              <option value="Online Order">🌐 Online Pre-Order (Student)</option>
+              <option value="Walk-in POS">🖥️ Walk-in Counter (Employee POS)</option>
+            </select>
 
-          <div class="cart-summary-box">
-            <div class="summary-line">
-              <span>Items Subtotal</span>
-              <span id="online-sub-val">₹0.00</span>
-            </div>
-            <div class="summary-line" style="color:var(--green-700);">
-              <span>Promo Discount</span>
-              <span id="online-disc-val">-₹0.00</span>
-            </div>
-            <div class="summary-line">
-              <span>Campus Canteen GST (5%)</span>
-              <span id="online-tax-val">₹0.00</span>
-            </div>
-            <div class="summary-line total">
-              <span>Payable Total</span>
-              <span id="online-total-val">₹0.00</span>
-            </div>
-          </div>
+            <label style="font-size:0.8rem; font-weight:600;">Payment Method</label>
+            <select id="payment-mode" class="input">
+              <option value="UPI">📱 UPI / QR Scan</option>
+              <option value="Cash">💵 Cash at Counter</option>
+            </select>
 
-          <form id="online-checkout-form">
-            <div class="form-grid-2">
-              <div>
-                <label class="form-label" for="online-cust-name">Student / Staff Name</label>
-                <input type="text" id="online-cust-name" class="input-field" value="Aarav Sharma" required />
-              </div>
-              <div>
-                <label class="form-label" for="online-campus-id">Campus ID / Roll No</label>
-                <input type="text" id="online-campus-id" class="input-field" value="STU-2026-101" required />
-              </div>
-            </div>
-
-            <div class="form-grid-2">
-              <div>
-                <label class="form-label" for="online-service-type">Order Mode</label>
-                <select id="online-service-type" class="input-field">
-                  <option value="pickup">🏃 Express Counter Pickup</option>
-                  <option value="dine_in">🍽️ Dine-In Table Reservation</option>
-                  <option value="parcel">🥡 Eco-Pack Takeaway</option>
-                </select>
-              </div>
-              <div>
-                <label class="form-label" for="online-pickup-slot">Pickup Time / Table</label>
-                <input type="text" id="online-pickup-slot" class="input-field" value="In 10 Mins (Break)" />
-              </div>
-            </div>
-
-            <div class="form-grid-2">
-              <div>
-                <label class="form-label" for="online-pay-method">Payment Method</label>
-                <select id="online-pay-method" class="input-field">
-                  <option value="wallet">💳 Campus Wallet (Instant)</option>
-                  <option value="upi">📱 UPI QR (GPay / PhonePe)</option>
-                  <option value="cash">💵 Pay Cash at Counter</option>
-                </select>
-              </div>
-              <div>
-                <label class="form-label" for="online-notes">Cooking Note</label>
-                <input type="text" id="online-notes" class="input-field" placeholder="Less spicy, no onion..." />
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block" style="padding-block:0.75rem; font-size:0.95rem;">
-              🌿 Place Online Order &amp; Get Token
+            <button type="submit" class="btn" style="inline-size:100%; padding:0.7rem;">
+              ✅ Place Order &amp; Generate Token
             </button>
           </form>
         </aside>
       </div>
     </section>
 
-    <!-- ==================================================================
-         MODULE 2: EMPLOYEE WALK-IN COUNTER POS (OFFLINE / ONLINE BILLING)
-         ================================================================== -->
-    <section id="view-pos" class="view-section" aria-label="Employee Walk-in Point of Sale">
-      <div class="card-box" style="background:linear-gradient(90deg, #14532d, #166534); color:#fff; margin-block-end:1.15rem;">
-        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem;">
-          <div>
-            <h2 style="font-size:1.25rem; font-weight:800;">🖥️ Employee Walk-In Counter POS Terminal</h2>
-            <p style="font-size:0.83rem; color:#bbf7d0;">
-              High-speed touch billing for canteen employees. Works 100% offline during internet outages and auto-prints thermal tokens.
-            </p>
-          </div>
-          <div style="display:flex; gap:0.6rem; align-items:center;">
-            <span class="status-pill">Cashier: Ramesh Verma (EMP-CAN-01)</span>
-            <span class="status-pill" id="pos-offline-queue-badge">Offline Queue: 0</span>
-          </div>
+    <!-- =======================================================
+         TAB 2: EMPLOYEE LIVE ORDERS & TOKEN STATUS
+         ======================================================= -->
+    <section id="tab-orders" class="section">
+      <div class="stats-row">
+        <div class="stat-box">
+          <small>🔔 Ready to Collect Tokens</small>
+          <h3 id="ready-tokens">None</h3>
+        </div>
+        <div class="stat-box">
+          <small>🍳 Preparing in Kitchen</small>
+          <h3 id="prep-tokens">None</h3>
         </div>
       </div>
 
-      <div class="workspace-grid">
-        <!-- Left: Quick POS Touch Grid -->
-        <div>
-          <div class="filter-bar">
-            <div class="search-row">
-              <div class="search-input-wrap">
-                <input
-                  type="search"
-                  id="pos-search-input"
-                  class="input-field"
-                  placeholder="⚡ Quick filter item name or price (Tap any tile to add to counter bill)..."
-                />
-              </div>
-              <div class="category-pills" id="pos-category-pills"></div>
-            </div>
-          </div>
-
-          <div class="pos-grid" id="pos-items-grid"></div>
-        </div>
-
-        <!-- Right: Counter Register & Change Calculator -->
-        <aside class="cart-panel" aria-label="POS Billing Register">
-          <div class="cart-header">
-            <h2 class="cart-title">🧾 Counter Bill Register</h2>
-            <button type="button" class="btn btn-danger btn-sm" id="btn-clear-pos-cart">Reset Bill</button>
-          </div>
-
-          <div class="cart-items-list" id="pos-cart-list"></div>
-
-          <div class="cart-summary-box">
-            <div class="summary-line">
-              <span>Counter Subtotal</span>
-              <span id="pos-sub-val">₹0.00</span>
-            </div>
-            <div class="summary-line">
-              <span>Staff / Manual Discount (₹)</span>
-              <input
-                type="number"
-                id="pos-manual-discount"
-                min="0"
-                step="5"
-                value="0"
-                style="inline-size:75px; text-align:end; border:1px solid var(--slate-300); border-radius:4px; padding:1px 4px;"
-              />
-            </div>
-            <div class="summary-line">
-              <span>GST (5%)</span>
-              <span id="pos-tax-val">₹0.00</span>
-            </div>
-            <div class="summary-line total">
-              <span>Net Counter Bill</span>
-              <span id="pos-total-val">₹0.00</span>
-            </div>
-          </div>
-
-          <form id="pos-checkout-form">
-            <div class="form-grid-2">
-              <div>
-                <label class="form-label" for="pos-cust-name">Walk-In Customer / Roll #</label>
-                <input type="text" id="pos-cust-name" class="input-field" value="Walk-in Student" required />
-              </div>
-              <div>
-                <label class="form-label" for="pos-table-slot">Service / Table #</label>
-                <select id="pos-table-slot" class="input-field">
-                  <option value="Counter Pickup">Counter Token Pickup</option>
-                  <option value="Table #01">Dine-In Table #01</option>
-                  <option value="Table #02">Dine-In Table #02</option>
-                  <option value="Table #03">Dine-In Table #03</option>
-                  <option value="Table #04">Dine-In Table #04</option>
-                  <option value="Parcel Pack">Takeaway Parcel</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-grid-2">
-              <div>
-                <label class="form-label" for="pos-pay-method">Payment Mode</label>
-                <select id="pos-pay-method" class="input-field">
-                  <option value="cash">💵 Cash at Counter</option>
-                  <option value="upi">📱 Counter UPI QR</option>
-                  <option value="wallet">💳 Campus ID Wallet</option>
-                  <option value="card">💳 Debit / Credit Card</option>
-                </select>
-              </div>
-              <div>
-                <label class="form-label" for="pos-cash-received">Cash Received (₹)</label>
-                <input type="number" id="pos-cash-received" class="input-field" placeholder="e.g. 200" min="0" />
-              </div>
-            </div>
-
-            <div class="summary-line" style="background:var(--green-50); padding:0.45rem 0.65rem; border-radius:6px; margin-block-end:0.75rem; font-weight:700; color:var(--green-900);">
-              <span>Change to Return:</span>
-              <span id="pos-change-return">₹0.00</span>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-              <button type="submit" data-pos-status="preparing" class="btn btn-primary">
-                🖨️ Bill &amp; Send to Kitchen
-              </button>
-              <button type="submit" data-pos-status="completed" class="btn btn-secondary">
-                ⚡ Instant Handover
-              </button>
-            </div>
-          </form>
-        </aside>
+      <div class="card" style="overflow-x:auto;">
+        <h2 style="color:var(--orange-dark); margin-block-end:0.8rem;">👨‍🍳 Live Canteen Orders (Employee Counter)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Customer</th>
+              <th>Mode</th>
+              <th>Ordered Items</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody"></tbody>
+        </table>
       </div>
     </section>
 
-    <!-- ==================================================================
-         MODULE 3: LIVE KITCHEN DISPLAY SYSTEM (KDS) & PUBLIC TOKEN SCREEN
-         ================================================================== -->
-    <section id="view-kds" class="view-section" aria-label="Kitchen Display System and Live Token Board">
-      <!-- Digital Public Canteen TV Token Display -->
-      <div class="token-board-banner">
-        <div class="token-display-group">
-          <h3>✅ Ready for Pickup at Leaf Counter (Collect Now)</h3>
-          <div class="token-pills-wrap" id="public-ready-tokens"></div>
+    <!-- =======================================================
+         TAB 3: ADMIN MENU MANAGEMENT & DAILY SALES
+         ======================================================= -->
+    <section id="tab-admin" class="section">
+      <div class="stats-row">
+        <div class="stat-box">
+          <small>Total Orders Today</small>
+          <h3 id="stat-orders">0</h3>
         </div>
-        <div class="token-display-group">
-          <h3>🍳 Preparing in Kitchen</h3>
-          <div class="token-pills-wrap" id="public-prep-tokens"></div>
+        <div class="stat-box">
+          <small>Total Canteen Sales</small>
+          <h3 id="stat-sales">₹0</h3>
         </div>
-      </div>
-
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">👨‍🍳 Live Kitchen Display System (KDS) — Order Workflow</h2>
-          <p style="font-size:0.82rem; color:var(--slate-600);">
-            Click the status action button on any order card to advance it from Pending → Preparing → Ready → Completed.
-          </p>
-        </div>
-        <div style="display:flex; gap:0.55rem;">
-          <select id="kds-source-filter" class="input-field" style="inline-size:auto;">
-            <option value="all">All Order Sources (Online + Walk-in POS)</option>
-            <option value="online">🌿 Online Pre-Orders Only</option>
-            <option value="offline_pos">🖥️ Walk-in Counter POS Only</option>
-          </select>
+        <div class="stat-box">
+          <small>Menu Items Available</small>
+          <h3 id="stat-items">0</h3>
         </div>
       </div>
 
-      <div class="kds-columns">
-        <div class="kds-col">
-          <div class="kds-col-header">
-            <span>🕒 Pending / New Orders</span>
-            <span class="badge badge-amber" id="kds-count-pending">0</span>
+      <div class="order-layout">
+        <!-- Left: Menu Table -->
+        <div class="card" style="overflow-x:auto;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-block-end:0.8rem;">
+            <h2 style="color:var(--orange-dark);">📋 Manage Canteen Menu</h2>
+            <button type="button" class="btn btn-outline" onclick="resetDemo()">🔄 Reset Default Data</button>
           </div>
-          <div id="kds-list-pending" style="display:flex; flex-direction:column; gap:0.65rem;"></div>
-        </div>
-
-        <div class="kds-col">
-          <div class="kds-col-header">
-            <span>🔥 Preparing in Kitchen</span>
-            <span class="badge badge-blue" id="kds-count-preparing">0</span>
-          </div>
-          <div id="kds-list-preparing" style="display:flex; flex-direction:column; gap:0.65rem;"></div>
-        </div>
-
-        <div class="kds-col">
-          <div class="kds-col-header">
-            <span>🔔 Ready at Counter</span>
-            <span class="badge badge-green" id="kds-count-ready">0</span>
-          </div>
-          <div id="kds-list-ready" style="display:flex; flex-direction:column; gap:0.65rem;"></div>
-        </div>
-
-        <div class="kds-col">
-          <div class="kds-col-header">
-            <span>✔️ Completed / Handed Over</span>
-            <span class="badge badge-green" id="kds-count-completed">0</span>
-          </div>
-          <div id="kds-list-completed" style="display:flex; flex-direction:column; gap:0.65rem;"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================================================================
-         MODULE 4: MENU CRUD & RAW MATERIAL INVENTORY MANAGEMENT
-         ================================================================== -->
-    <section id="view-inventory" class="view-section" aria-label="Menu and Raw Material Inventory">
-      <div class="card-box">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">🍽️ Canteen Menu Item &amp; Live Portion Stock Manager</h2>
-            <p style="font-size:0.82rem; color:var(--slate-600);">
-              Add new dishes, update prices, restock portions, or mark items Sold Out in real time.
-            </p>
-          </div>
-          <button type="button" class="btn btn-primary" id="btn-open-add-menu">
-            ➕ Add New Canteen Dish
-          </button>
-        </div>
-
-        <div class="table-responsive">
-          <table class="data-table">
+          <table>
             <thead>
               <tr>
                 <th>Dish Name</th>
                 <th>Category</th>
-                <th>Diet</th>
                 <th>Price</th>
-                <th>Portions Left</th>
                 <th>Status</th>
-                <th>Quick Actions</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody id="inventory-menu-tbody"></tbody>
+            <tbody id="admin-menu-tbody"></tbody>
           </table>
         </div>
-      </div>
 
-      <div class="card-box">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">🌾 Kitchen Raw Material &amp; Grocery Inventory</h2>
-            <p style="font-size:0.82rem; color:var(--slate-600);">
-              Track staple supplies (Rice, Milk, Paneer, Oil, Eco-Plates) and trigger instant restocks when stock falls below threshold.
-            </p>
-          </div>
-          <button type="button" class="btn btn-secondary" id="btn-open-add-raw">
-            ➕ Add Raw Material
-          </button>
-        </div>
+        <!-- Right: Add New Dish Form -->
+        <aside class="card">
+          <h2 style="color:var(--orange-dark); margin-block-end:0.75rem;">➕ Add New Dish</h2>
+          <form onsubmit="addMenuItem(event)">
+            <label style="font-size:0.8rem; font-weight:600;">Dish Name</label>
+            <input type="text" id="new-name" class="input" placeholder="e.g. Veg Chowmein" required />
 
-        <div class="table-responsive">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Raw Material / Ingredient</th>
-                <th>Category</th>
-                <th>Current Stock</th>
-                <th>Min Alert Level</th>
-                <th>Supplier</th>
-                <th>Health Status</th>
-                <th>Restock / Consume</th>
-              </tr>
-            </thead>
-            <tbody id="inventory-raw-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+            <label style="font-size:0.8rem; font-weight:600;">Category</label>
+            <select id="new-cat" class="input">
+              <option value="Breakfast">Breakfast</option>
+              <option value="Meals">Meals</option>
+              <option value="Snacks">Snacks</option>
+              <option value="Drinks">Drinks</option>
+            </select>
 
-    <!-- ==================================================================
-         MODULE 5: CAMPUS DIGITAL WALLET & COUPONS
-         ================================================================== -->
-    <section id="view-wallet" class="view-section" aria-label="Campus Digital Wallet and Coupons">
-      <div class="workspace-grid">
-        <div>
-          <div class="card-box">
-            <div class="section-header">
-              <div>
-                <h2 class="section-title">💳 Student &amp; Staff Smart Campus Wallet Directory</h2>
-                <p style="font-size:0.82rem; color:var(--slate-600);">
-                  Cashless canteen cards for students, faculty, and canteen staff.
-                </p>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Campus ID</th>
-                    <th>Account Holder</th>
-                    <th>Role</th>
-                    <th>Wallet Balance</th>
-                    <th>Quick Action</th>
-                  </tr>
-                </thead>
-                <tbody id="wallet-users-tbody"></tbody>
-              </table>
-            </div>
-          </div>
+            <label style="font-size:0.8rem; font-weight:600;">Price (₹)</label>
+            <input type="number" id="new-price" class="input" placeholder="e.g. 60" min="5" required />
 
-          <div class="card-box">
-            <h3 class="section-title" style="margin-block-end:0.75rem;">📜 Recent Wallet Passbook Transactions</h3>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Reference</th>
-                    <th>Campus ID</th>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody id="wallet-txns-tbody"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Instant Wallet Recharge Box -->
-        <aside class="cart-panel">
-          <div class="cart-header">
-            <h2 class="cart-title">⚡ Instant Wallet Top-Up</h2>
-          </div>
-          <form id="wallet-recharge-form">
-            <div class="form-group">
-              <label class="form-label" for="wallet-topup-id">Select Campus ID</label>
-              <select id="wallet-topup-id" class="input-field"></select>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="wallet-topup-amount">Recharge Amount (₹)</label>
-              <input type="number" id="wallet-topup-amount" class="input-field" value="200" min="10" required />
-            </div>
-            <div style="display:flex; gap:0.4rem; margin-block-end:0.75rem;">
-              <button type="button" class="btn btn-secondary btn-sm" data-quick-topup="100">+₹100</button>
-              <button type="button" class="btn btn-secondary btn-sm" data-quick-topup="250">+₹250</button>
-              <button type="button" class="btn btn-secondary btn-sm" data-quick-topup="500">+₹500</button>
-              <button type="button" class="btn btn-secondary btn-sm" data-quick-topup="1000">+₹1000</button>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="wallet-topup-desc">Payment Mode / Remark</label>
-              <input type="text" id="wallet-topup-desc" class="input-field" value="Counter Cash / UPI Recharge" />
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">
-              💰 Credit Wallet Balance
-            </button>
+            <button type="submit" class="btn" style="inline-size:100%;">Save to Menu</button>
           </form>
-
-          <div style="margin-block-start:1.25rem; padding-block-start:1rem; border-block-start:1px solid var(--slate-200);">
-            <h3 style="font-size:0.9rem; font-weight:800; color:var(--green-900); margin-block-end:0.55rem;">
-              🏷️ Active Canteen Promo Codes
-            </h3>
-            <div id="wallet-coupons-list" style="display:flex; flex-direction:column; gap:0.45rem;"></div>
-          </div>
         </aside>
       </div>
     </section>
-
-    <!-- ==================================================================
-         MODULE 6: ADMIN ANALYTICS, SALES REPORTS & FEEDBACK
-         ================================================================== -->
-    <section id="view-reports" class="view-section" aria-label="Admin Reports and Student Feedback">
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">📊 Canteen Revenue Analytics &amp; Day-End Reports</h2>
-          <p style="font-size:0.82rem; color:var(--slate-600);">
-            Combined real-time metrics across Online Student Pre-Orders and Offline Walk-in Counter POS.
-          </p>
-        </div>
-        <div style="display:flex; flex-wrap:wrap; gap:0.55rem;">
-          <button type="button" class="btn btn-primary btn-sm" id="btn-export-csv">📥 Export Orders CSV</button>
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-reset-demo">🔄 Reset Demo Dataset</button>
-        </div>
-      </div>
-
-      <div class="kpi-grid" id="reports-kpi-grid"></div>
-
-      <div class="workspace-grid">
-        <div>
-          <div class="card-box">
-            <h3 class="section-title" style="margin-block-end:0.9rem;">📈 Sales Breakdown by Payment Method &amp; Source</h3>
-            <div id="reports-charts-area"></div>
-          </div>
-
-          <div class="card-box">
-            <h3 class="section-title" style="margin-block-end:0.9rem;">🧾 Complete Order Ledger (Click Receipt to Print)</h3>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Token #</th>
-                    <th>Customer</th>
-                    <th>Source</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>Receipt</th>
-                  </tr>
-                </thead>
-                <tbody id="reports-orders-tbody"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Student & Faculty Feedback Wall -->
-        <aside>
-          <div class="card-box">
-            <h3 class="section-title" style="margin-block-end:0.65rem;">⭐ Submit Canteen Feedback</h3>
-            <form id="feedback-form">
-              <div class="form-grid-2">
-                <div>
-                  <label class="form-label" for="fb-name">Your Name</label>
-                  <input type="text" id="fb-name" class="input-field" placeholder="e.g. Sneha Rao" required />
-                </div>
-                <div>
-                  <label class="form-label" for="fb-role">Department / Yr</label>
-                  <input type="text" id="fb-role" class="input-field" placeholder="e.g. BCA 2nd Yr" value="Student" />
-                </div>
-              </div>
-              <div class="form-grid-2">
-                <div>
-                  <label class="form-label" for="fb-token">Order Token (Optional)</label>
-                  <input type="text" id="fb-token" class="input-field" placeholder="e.g. GL-101" />
-                </div>
-                <div>
-                  <label class="form-label" for="fb-rating">Star Rating</label>
-                  <select id="fb-rating" class="input-field">
-                    <option value="5">⭐⭐⭐⭐⭐ (5/5 Excellent)</option>
-                    <option value="4">⭐⭐⭐⭐ (4/5 Good)</option>
-                    <option value="3">⭐⭐⭐ (3/5 Average)</option>
-                    <option value="2">⭐⭐ (2/5 Needs Work)</option>
-                    <option value="1">⭐ (1/5 Poor)</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="fb-comment">Review / Suggestion</label>
-                <textarea id="fb-comment" class="input-field" rows="2" placeholder="Share feedback on food quality, hygiene, or service..." required></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">Post Feedback</button>
-            </form>
-          </div>
-
-          <div class="card-box">
-            <h3 class="section-title" style="margin-block-end:0.75rem;">💬 Recent Campus Reviews</h3>
-            <div id="feedback-wall-list" style="display:flex; flex-direction:column; gap:0.7rem;"></div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
   </main>
 
-  <!-- ====================================================================
-       NATIVE <dialog> 1: ADD / EDIT MENU DISH MODAL
-       ==================================================================== -->
-  <dialog id="menu-item-dialog" aria-labelledby="menu-dialog-title" closedby="any">
-    <div class="dialog-header">
-      <h2 class="dialog-title" id="menu-dialog-title">🍃 Add / Edit Canteen Menu Item</h2>
-      <button type="button" class="btn btn-secondary btn-sm" data-close-dialog="menu-item-dialog" aria-label="Close modal">✕</button>
-    </div>
-    <form id="menu-item-form">
-      <div class="dialog-body">
-        <input type="hidden" id="dish-id" />
-        <div class="form-grid-2">
-          <div>
-            <label class="form-label" for="dish-name">Dish Name *</label>
-            <input type="text" id="dish-name" class="input-field" placeholder="e.g. Paneer Butter Masala Combo" required autofocus />
-          </div>
-          <div>
-            <label class="form-label" for="dish-category">Category *</label>
-            <select id="dish-category" class="input-field" required>
-              <option value="1">Breakfast &amp; Tiffin</option>
-              <option value="2">Meals &amp; Thalis</option>
-              <option value="3">Campus Snacks</option>
-              <option value="4">Fresh Beverages</option>
-              <option value="5">Healthy &amp; Salads</option>
-              <option value="6">Desserts &amp; Bakery</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="dish-desc">Description</label>
-          <input type="text" id="dish-desc" class="input-field" placeholder="Short appetizing description of ingredients & accompaniments" required />
-        </div>
-
-        <div class="form-grid-2">
-          <div>
-            <label class="form-label" for="dish-price">Selling Price (₹) *</label>
-            <input type="number" id="dish-price" class="input-field" min="5" step="1" value="50" required />
-          </div>
-          <div>
-            <label class="form-label" for="dish-stock">Initial Portion Stock *</label>
-            <input type="number" id="dish-stock" class="input-field" min="0" value="35" required />
-          </div>
-        </div>
-
-        <div class="form-grid-2">
-          <div>
-            <label class="form-label" for="dish-veg">Dietary Type</label>
-            <select id="dish-veg" class="input-field">
-              <option value="1">🟢 Pure Vegetarian</option>
-              <option value="0">🔴 Egg / Non-Veg</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label" for="dish-special">Highlight Tag</label>
-            <input type="text" id="dish-special" class="input-field" placeholder="e.g. Chef Special, Bestseller" />
-          </div>
-        </div>
-
-        <div class="form-grid-2">
-          <div>
-            <label class="form-label" for="dish-calories">Calories (kcal)</label>
-            <input type="number" id="dish-calories" class="input-field" value="280" />
-          </div>
-          <div>
-            <label class="form-label" for="dish-prep">Prep Time (mins)</label>
-            <input type="number" id="dish-prep" class="input-field" value="8" />
-          </div>
-        </div>
+  <!-- NATIVE <dialog> FOR ORDER TOKEN RECEIPT -->
+  <dialog id="receipt-modal" aria-labelledby="receipt-title">
+    <div style="text-align:center;">
+      <img src="./logo.svg" alt="Logo" style="inline-size:44px; margin-inline:auto; margin-block-end:0.4rem;" />
+      <h3 id="receipt-title" style="color:var(--orange-dark);">CampusLeaf Canteen</h3>
+      <p style="font-size:0.78rem; color:var(--muted);">Order Token Receipt</p>
+      <div id="receipt-body" style="margin-block:0.9rem; padding:0.8rem; background:var(--orange-bg); border-radius:8px; text-align:start; font-size:0.88rem;"></div>
+      <div style="display:flex; gap:0.5rem; justify-content:center;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('receipt-modal').close()">Close</button>
+        <button type="button" class="btn" onclick="window.print()">🖨️ Print</button>
       </div>
-      <div class="dialog-footer">
-        <button type="button" class="btn btn-secondary" data-close-dialog="menu-item-dialog">Cancel</button>
-        <button type="submit" class="btn btn-primary">💾 Save Menu Dish</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- ====================================================================
-       NATIVE <dialog> 2: ADD RAW MATERIAL MODAL
-       ==================================================================== -->
-  <dialog id="raw-material-dialog" aria-labelledby="raw-dialog-title" closedby="any">
-    <div class="dialog-header">
-      <h2 class="dialog-title" id="raw-dialog-title">🌾 Add Kitchen Raw Material</h2>
-      <button type="button" class="btn btn-secondary btn-sm" data-close-dialog="raw-material-dialog" aria-label="Close modal">✕</button>
-    </div>
-    <form id="raw-material-form">
-      <div class="dialog-body">
-        <div class="form-group">
-          <label class="form-label" for="raw-name">Ingredient / Supply Name *</label>
-          <input type="text" id="raw-name" class="input-field" placeholder="e.g. Organic Jaggery Powder" required autofocus />
-        </div>
-        <div class="form-grid-2">
-          <div>
-            <label class="form-label" for="raw-category">Category</label>
-            <input type="text" id="raw-category" class="input-field" value="Grains & Staples" />
-          </div>
-          <div>
-            <label class="form-label" for="raw-unit">Measurement Unit</label>
-            <select id="raw-unit" class="input-field">
-              <option value="kg">Kilograms (kg)</option>
-              <option value="liters">Liters (L)</option>
-              <option value="packs">Packs / Boxes</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-grid-2">
-          <div>
-            <label class="form-label" for="raw-qty">Current Stock Qty *</label>
-            <input type="number" id="raw-qty" class="input-field" value="25" min="0" step="0.5" required />
-          </div>
-          <div>
-            <label class="form-label" for="raw-min">Low-Stock Alert Threshold</label>
-            <input type="number" id="raw-min" class="input-field" value="8" min="1" step="0.5" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="raw-supplier">Vendor / Supplier Name</label>
-          <input type="text" id="raw-supplier" class="input-field" value="GreenValley Farmers Co-op" />
-        </div>
-      </div>
-      <div class="dialog-footer">
-        <button type="button" class="btn btn-secondary" data-close-dialog="raw-material-dialog">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save Ingredient</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- ====================================================================
-       NATIVE <dialog> 3: THERMAL TOKEN RECEIPT & PRINT DIALOG
-       ==================================================================== -->
-  <dialog id="receipt-dialog" aria-labelledby="receipt-dialog-title" closedby="any">
-    <div class="dialog-header no-print">
-      <h2 class="dialog-title" id="receipt-dialog-title">🧾 Canteen Order Token &amp; Thermal Receipt</h2>
-      <button type="button" class="btn btn-secondary btn-sm" data-close-dialog="receipt-dialog" aria-label="Close modal">✕</button>
-    </div>
-    <div class="dialog-body">
-      <div class="receipt-paper" id="receipt-print-area"></div>
-    </div>
-    <div class="dialog-footer no-print">
-      <button type="button" class="btn btn-secondary" data-close-dialog="receipt-dialog">Done</button>
-      <button type="button" class="btn btn-primary" id="btn-print-receipt">🖨️ Print Thermal Receipt</button>
     </div>
   </dialog>
 
-  <!-- ====================================================================
-       NATIVE <dialog> 4: SWITCH ACCOUNT / LOGIN MODAL
-       ==================================================================== -->
-  <dialog id="auth-dialog" aria-labelledby="auth-dialog-title" closedby="any">
-    <div class="dialog-header">
-      <h2 class="dialog-title" id="auth-dialog-title">👤 Switch Campus Account / Employee Login</h2>
-      <button type="button" class="btn btn-secondary btn-sm" data-close-dialog="auth-dialog" aria-label="Close modal">✕</button>
-    </div>
-    <div class="dialog-body">
-      <p style="font-size:0.83rem; color:var(--slate-600); margin-block-end:0.85rem;">
-        Select any pre-configured college profile below to test Student Online Pre-Ordering, Canteen Employee POS, or Admin Management:
-      </p>
-      <div id="auth-Account-cards" style="display:flex; flex-direction:column; gap:0.55rem;"></div>
-    </div>
-    <div class="dialog-footer">
-      <button type="button" class="btn btn-secondary" data-close-dialog="auth-dialog">Close</button>
-    </div>
-  </dialog>
-
-  <!-- Toast Notification Container -->
-  <div class="toast-container no-print" id="toast-container" aria-live="polite"></div>
-
-  <!-- ====================================================================
-       FOOTER
-       ==================================================================== -->
-  <footer class="app-footer no-print">
-    <div class="footer-inner">
-      <div style="display:flex; align-items:center; gap:0.5rem;">
-        <img src="./assets/logo-leaf.svg" alt="" width="24" height="24" />
-        <strong>GreenLeaf Canteen Management System</strong>
-        <span>• Offline &amp; Online Full-Stack College Project (HTML5, CSS3, JS, PHP 8, MySQL)</span>
-      </div>
-      <div>
-        <span>🌿 Clean Green &amp; White UI • PWA Offline Counter Ready</span>
-      </div>
-    </div>
+  <footer>
+    🧡 CampusLeaf Canteen Management System • College Project (HTML, CSS, JS, PHP &amp; MySQL)
   </footer>
 
-  <script src="./js/data.js"></script>
-  <script src="./js/api.js"></script>
-  <script src="./js/app.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>

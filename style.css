@@ -1,0 +1,283 @@
+/* =========================================================
+   Simple College Canteen Management System (Orange & White)
+   ========================================================= */
+:root {
+  --orange-dark: #c2410c;
+  --orange: #ea580c;
+  --orange-light: #f97316;
+  --orange-bg: #fff7ed;
+  --orange-border: #fed7aa;
+  --white: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background: var(--orange-bg);
+  color: var(--text);
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Navigation */
+header {
+  background: var(--white);
+  border-block-end: 2px solid var(--orange-border);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: safe center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: safe center;
+  gap: 0.7rem;
+}
+
+.brand img {
+  inline-size: 42px;
+  block-size: 42px;
+}
+
+.brand h1 {
+  font-size: 1.3rem;
+  color: var(--orange-dark);
+}
+
+.brand span {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--orange-border);
+  background: var(--orange-bg);
+  color: var(--orange-dark);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: var(--orange);
+  color: var(--white);
+  border-color: var(--orange);
+}
+
+/* Main Layout */
+main {
+  max-inline-size: 1180px;
+  inline-size: 100%;
+  margin-inline: auto;
+  padding: 1.25rem;
+  flex: 1;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* Order Grid (Menu + Bill Sidebar) */
+.order-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .order-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--orange-border);
+  border-radius: 12px;
+  padding: 1.1rem;
+  box-shadow: 0 3px 10px rgba(234, 88, 12, 0.06);
+}
+
+/* Category Pills */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-end: 1rem;
+}
+
+.cat-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--orange-border);
+  background: var(--white);
+  color: var(--orange-dark);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cat-btn.active {
+  background: var(--orange-light);
+  color: var(--white);
+}
+
+/* Menu Items Grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.9rem;
+}
+
+.food-item {
+  background: var(--white);
+  border: 1px solid var(--orange-border);
+  border-radius: 10px;
+  padding: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.food-cat {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+.food-price {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--orange-dark);
+}
+
+/* Buttons & Inputs */
+.btn {
+  padding: 0.55rem 0.95rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--orange);
+  color: var(--white);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--orange-dark);
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--orange-dark);
+  border: 1px solid var(--orange-border);
+}
+
+.input {
+  inline-size: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  margin-block-end: 0.65rem;
+}
+
+/* Summary Stats & Tables */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-block-end: 1.2rem;
+}
+
+.stat-box {
+  background: var(--white);
+  border-inline-start: 5px solid var(--orange);
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--orange-border);
+  border-inline-start-width: 5px;
+}
+
+.stat-box h3 {
+  font-size: 1.5rem;
+  color: var(--orange-dark);
+}
+
+table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.7rem;
+  text-align: start;
+  border-block-end: 1px solid #f1f5f9;
+}
+
+th {
+  background: var(--orange-bg);
+  color: var(--orange-dark);
+}
+
+.badge {
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--orange-bg);
+  color: var(--orange-dark);
+  border: 1px solid var(--orange-border);
+}
+
+/* Native <dialog> Receipt Modal */
+dialog {
+  margin: auto;
+  border: 2px solid var(--orange-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  inline-size: min(92vw, 360px);
+  background: var(--white);
+}
+
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--white);
+  border-block-start: 1px solid var(--orange-border);
+}
